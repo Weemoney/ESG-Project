@@ -234,3 +234,46 @@ with st.expander("📊 Angka di balik layar"):
 # ── Footer ────────────────────────────────────────────────────────
 st.divider()
 st.caption("🌿 Sehat Alam Indonesia · Open source · Data: GBIF · Dibuat untuk edukasi publik")
+st.divider()
+st.markdown("### 📊 Perbandingan Semua Provinsi")
+
+import plotly.express as px
+import pandas as pd
+
+# Hitung skor semua provinsi
+rows = []
+for prov in ALL_PROVINCES:
+    d = PROVINCE_DATA.get(prov, DEFAULT_DATA)
+    b = calculate_biodiversity_score(d["species"])
+    s = b["biodiversity_score"]
+    label, _, _ = kondisi(s)
+    rows.append({"Provinsi": prov, "Skor": s, "Kondisi": label})
+
+df = pd.DataFrame(rows).sort_values("Skor", ascending=True)
+
+color_map = {
+    "Baik": "#43A047",
+    "Perlu Perhatian": "#FFA000",
+    "Kritis": "#E53935",
+}
+
+fig = px.bar(
+    df,
+    x="Skor",
+    y="Provinsi",
+    color="Kondisi",
+    color_discrete_map=color_map,
+    orientation="h",
+    title="Skor Kesehatan Alam per Provinsi",
+    labels={"Skor": "Skor Kesehatan Alam (0-100)", "Provinsi": ""},
+)
+
+fig.update_layout(
+    height=700,
+    plot_bgcolor="white",
+    legend_title="Kondisi",
+    title_font_size=14,
+)
+
+st.plotly_chart(fig, use_container_width=True)
+st.caption("⚠️ Data masih simulasi — bukan data lapangan nyata.")
