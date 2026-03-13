@@ -71,18 +71,6 @@ biodiversity-esg-indonesia/
 
 ---
 
-## 👥 Contributors & Responsibilities
-
-| Module | Owner | Domain |
-|---|---|---|
-| `src/collector/` | Partner | Bioinformatics — API, taxonomy, data parsing |
-| `src/analyzer/` | Partner | Bioinformatics — diversity indices, ecology stats |
-| `src/dashboard/esg_scorer.py` | You | ESG — scoring model, GRI 304 alignment |
-| `src/dashboard/gri304_mapper.py` | You | ESG — framework mapping, reporting output |
-| `src/dashboard/app.py` | You | ESG — Streamlit UI, visualization |
-
----
-
 ## 🚀 Roadmap
 
 ### v0.1 — MVP *(Semester 2)*
