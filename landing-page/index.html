@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BioESG Indonesia — Nature Risk for Business</title>
+  <meta name="description" content="Turn real species data into GRI 304 and TNFD-aligned ESG scores. Free, open source, built for Indonesia's ecosystems." />
+  <meta property="og:title" content="BioESG Indonesia" />
+  <meta property="og:description" content="Biodiversity risk, translated for business." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green-900: #0D2B1F;
+      --green-800: #1B4332;
+      --green-700: #2D6A4F;
+      --green-500: #40916C;
+      --green-400: #52B788;
+      --green-100: #D8F3DC;
+      --green-50:  #F0FBF4;
+      --text:      #1A1A1A;
+      --text-2:    #555;
+      --text-3:    #888;
+      --border:    rgba(0,0,0,0.08);
+      --border-2:  rgba(0,0,0,0.14);
+      --bg:        #ffffff;
+      --bg-2:      #F8FAF8;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --text:   #F0F0F0;
+        --text-2: #A0A0A0;
+        --text-3: #666;
+        --border: rgba(255,255,255,0.08);
+        --border-2: rgba(255,255,255,0.14);
+        --bg:     #111;
+        --bg-2:   #1A1A1A;
+        --green-100: #1B4332;
+        --green-50:  #0D2B1F;
+      }
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .serif { font-family: 'DM Serif Display', serif; }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* ── NAV ─────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--bg);
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: 960px; margin: 0 auto;
+      padding: 1rem 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+    .logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 17px; color: var(--green-800);
+      display: flex; align-items: center; gap: 8px;
+      text-decoration: none;
+    }
+
+    .logo-leaf {
+      width: 18px; height: 18px;
+      background: var(--green-400);
+      border-radius: 50% 0 50% 0;
+      transform: rotate(-15deg);
+      flex-shrink: 0;
+    }
+
+    .nav-links {
+      display: flex; gap: 6px; list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 12px; color: var(--text-2);
+      text-decoration: none;
+      padding: 5px 12px; border-radius: 100px;
+      border: 0.5px solid transparent;
+      transition: all 0.15s;
+    }
+
+    .nav-links a:hover {
+      border-color: var(--border);
+      background: var(--bg-2);
+      color: var(--text);
+    }
+
+    .nav-cta {
+      font-size: 12px; font-weight: 500;
+      background: var(--green-800); color: #fff !important;
+      padding: 6px 14px !important;
+      border-radius: 6px !important;
+      border: none !important;
+      transition: background 0.15s !important;
+    }
+
+    .nav-cta:hover { background: var(--green-900) !important; }
+
+    /* ── HERO ────────────────────────────────────── */
+    .hero {
+      display: grid; grid-template-columns: 1.1fr 0.9fr;
+      gap: 3rem; align-items: center;
+      padding: 5rem 2rem 4rem;
+      max-width: 960px; margin: 0 auto;
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 10px; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--green-800); background: var(--green-100);
+      padding: 4px 10px; border-radius: 100px;
+      margin-bottom: 1.4rem;
+    }
+
+    .eyebrow-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%; background: var(--green-400);
+    }
+
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 42px; line-height: 1.15; font-weight: 400;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero h1 em { color: var(--green-700); font-style: italic; }
+
+    .hero-body {
+      font-size: 14px; line-height: 1.8;
+      color: var(--text-2); font-weight: 300;
+      margin-bottom: 2rem; max-width: 400px;
+    }
+
+    .cta-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1.25rem; }
+
+    .btn-p {
+      background: var(--green-800); color: #fff;
+      border: none; padding: 11px 24px;
+      border-radius: 6px; font-size: 13px; font-weight: 500;
+      cursor: pointer; font-family: 'DM Sans', sans-serif;
+      text-decoration: none; display: inline-block;
+      transition: background 0.15s;
+    }
+
+    .btn-p:hover { background: var(--green-900); }
+
+    .btn-s {
+      background: transparent; color: var(--text);
+      border: 0.5px solid var(--border-2);
+      padding: 11px 24px; border-radius: 6px;
+      font-size: 13px; font-weight: 400;
+      cursor: pointer; font-family: 'DM Sans', sans-serif;
+      text-decoration: none; display: inline-block;
+      transition: background 0.15s;
+    }
+
+    .btn-s:hover { background: var(--bg-2); }
+
+    .open-note {
+      font-size: 11px; color: var(--text-3);
+      display: flex; align-items: center; gap: 5px;
+    }
+
+    .open-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green-400); }
+
+    /* SCORE WIDGET */
+    .score-widget { display: flex; flex-direction: column; gap: 10px; }
+
+    .sw-meta { font-size: 10px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-3); margin-bottom: 2px; }
+
+    .sw-province {
+      font-family: 'DM Serif Display', serif;
+      font-size: 14px; color: var(--text); margin-bottom: 10px;
+    }
+
+    .sw-card {
+      background: var(--bg-2);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1rem 1.25rem;
+    }
+
+    .sw-label {
+      font-size: 10px; color: var(--text-3);
+      letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 8px;
+    }
+
+    .sw-row { display: flex; align-items: center; gap: 10px; }
+
+    .sw-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 30px; line-height: 1; min-width: 48px;
+    }
+
+    .sw-track {
+      flex: 1; height: 5px;
+      background: var(--border); border-radius: 3px; overflow: hidden;
+    }
+
+    .sw-fill {
+      height: 100%; border-radius: 3px;
+      transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 0%;
+    }
+
+    .pill {
+      font-size: 10px; font-weight: 500;
+      padding: 3px 9px; border-radius: 100px; white-space: nowrap;
+    }
+
+    .pill-g { background: var(--green-100); color: var(--green-800); }
+    .pill-r { background: #FDECEA; color: #7B1D1D; }
+    .pill-y { background: #FEF3CD; color: #7B4B00; }
+
+    .sw-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    .sw-mini .sw-row { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .sw-mini .sw-num { font-size: 24px; }
+    .sw-mini .sw-track { width: 100%; }
+
+    .sw-footnote {
+      font-size: 10px; color: var(--text-3);
+      text-align: right; padding-right: 2px;
+    }
+
+    /* ── SECTIONS ────────────────────────────────── */
+    .sec {
+      padding: 4rem 0;
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .sec-tag {
+      font-size: 10px; font-weight: 500;
+      color: var(--green-700);
+      text-transform: uppercase; letter-spacing: 0.1em;
+      margin-bottom: 0.6rem;
+    }
+
+    .sec h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 28px; font-weight: 400; line-height: 1.25;
+      margin-bottom: 0.85rem;
+    }
+
+    .sec-body {
+      font-size: 14px; color: var(--text-2);
+      line-height: 1.8; font-weight: 300; max-width: 560px;
+    }
+
+    /* STATS */
+    .stats-row {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden; margin-top: 2.5rem;
+      gap: 0.5px; background: var(--border);
+    }
+
+    .stat { background: var(--bg); padding: 1.75rem 1.5rem; }
+
+    .stat-n {
+      font-family: 'DM Serif Display', serif;
+      font-size: 38px; color: var(--green-700);
+      line-height: 1; margin-bottom: 6px;
+    }
+
+    .stat-d { font-size: 12px; color: var(--text-2); line-height: 1.55; font-weight: 300; }
+
+    /* RISK CARDS */
+    .risk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+
+    .risk-card {
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem; border-top-width: 2px; border-top-style: solid;
+    }
+
+    .risk-card.impact { border-top-color: #E24B4A; }
+    .risk-card.dep    { border-top-color: #EF9F27; }
+    .risk-card.bio    { border-top-color: var(--green-400); }
+    .risk-card.policy { border-top-color: #378ADD; }
+
+    .rk-tag {
+      font-size: 10px; font-weight: 500;
+      padding: 2px 8px; border-radius: 100px;
+      display: inline-block; margin-bottom: 8px;
+    }
+
+    .tag-red   { background: #FDECEA; color: #7B1D1D; }
+    .tag-amber { background: #FEF3CD; color: #7B4B00; }
+    .tag-green { background: var(--green-100); color: var(--green-800); }
+    .tag-blue  { background: #E6F1FB; color: #0C447C; }
+
+    .rk-title { font-size: 13px; font-weight: 500; margin-bottom: 6px; }
+    .rk-body  { font-size: 12px; color: var(--text-2); line-height: 1.65; font-weight: 300; }
+
+    /* INDUSTRY TABLE */
+    .table-wrap { overflow-x: auto; margin-top: 2rem; }
+
+    .ind-table {
+      width: 100%; border-collapse: collapse; font-size: 13px;
+      border: 0.5px solid var(--border); border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .ind-table th {
+      font-size: 10px; font-weight: 500;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--text-2); padding: 10px 14px;
+      border-bottom: 0.5px solid var(--border);
+      text-align: left; background: var(--bg-2);
+    }
+
+    .ind-table td {
+      padding: 11px 14px;
+      border-bottom: 0.5px solid var(--border);
+      color: var(--text);
+    }
+
+    .ind-table tr:last-child td { border-bottom: none; }
+    .ind-table tr:hover td { background: var(--bg-2); }
+
+    .risk-dot {
+      display: inline-block; width: 7px; height: 7px;
+      border-radius: 50%; margin-right: 5px; vertical-align: middle;
+    }
+
+    /* STEPS */
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2.5rem; }
+
+    .step {
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg); padding: 1.5rem;
+    }
+
+    .step-n {
+      font-family: 'DM Serif Display', serif;
+      font-size: 26px; color: var(--green-400); margin-bottom: 0.75rem;
+    }
+
+    .step-t { font-size: 13px; font-weight: 500; margin-bottom: 5px; }
+    .step-d { font-size: 12px; color: var(--text-2); line-height: 1.65; font-weight: 300; }
+
+    /* FRAMEWORK */
+    .fw-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 1.5rem; }
+
+    .fw-pill {
+      font-size: 11px; font-weight: 500;
+      padding: 6px 14px; border-radius: 100px;
+      border: 0.5px solid var(--green-400);
+      color: var(--green-800); background: var(--green-50);
+    }
+
+    /* OUTPUT */
+    .out-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 2rem; }
+
+    .out-card {
+      background: var(--bg-2);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg); padding: 1.25rem;
+    }
+
+    .out-icon {
+      width: 28px; height: 28px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; margin-bottom: 0.75rem;
+    }
+
+    .out-t { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+    .out-d { font-size: 12px; color: var(--text-2); line-height: 1.6; font-weight: 300; }
+
+    /* FOOTER */
+    footer {
+      padding: 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+      max-width: 960px; margin: 0 auto;
+    }
+
+    .footer-l { font-size: 11px; color: var(--text-3); line-height: 1.7; }
+
+    .footer-links { display: flex; gap: 1.25rem; }
+
+    .footer-links a {
+      font-size: 11px; color: var(--text-3); text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .footer-links a:hover { color: var(--text); }
+
+    /* ── RESPONSIVE ──────────────────────────────── */
+    @media (max-width: 720px) {
+      .hero { grid-template-columns: 1fr; padding: 3rem 1.5rem; }
+      .hero h1 { font-size: 32px; }
+      .score-widget { display: none; }
+      .stats-row { grid-template-columns: 1fr; }
+      .risk-grid { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr; }
+      .out-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#" class="logo">
+        <div class="logo-leaf"></div>
+        BioESG Indonesia
+      </a>
+      <ul class="nav-links">
+        <li><a href="#why">Why it matters</a></li>
+        <li><a href="#risk">Risk types</a></li>
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#frameworks">Frameworks</a></li>
+        <li><a href="https://github.com/weemoney/biodiversity-esg-indonesia" target="_blank" class="nav-cta">GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div>
+      <div class="eyebrow">
+        <div class="eyebrow-dot"></div>
+        Open source · Indonesia · GRI 304 · TNFD
+      </div>
+      <h1>Nature risk,<br><em>translated</em><br>for business.</h1>
+      <p class="hero-body">Indonesia holds the world's second-highest biodiversity — and some of its most exposed corporate operations. BioESG converts real species data into ESG scores your board, investors, and regulators can act on.</p>
+      <div class="cta-row">
+        <a href="https://your-streamlit-app.streamlit.app" target="_blank" class="btn-p">Try the tool</a>
+        <a href="https://github.com/weemoney/biodiversity-esg-indonesia" target="_blank" class="btn-s">View on GitHub</a>
+      </div>
+      <p class="open-note">
+        <span class="open-dot"></span>
+        Free · MIT License · Data from GBIF
+      </p>
+    </div>
+
+    <div class="score-widget">
+      <div class="sw-meta">Live example output</div>
+      <div class="sw-province">Kalimantan Tengah · Mining · 3,000 ha</div>
+
+      <div class="sw-card">
+        <div class="sw-label">Biodiversity score</div>
+        <div class="sw-row">
+          <div class="sw-num" id="n1">0</div>
+          <div class="sw-track"><div class="sw-fill" id="b1" style="background:#52B788;"></div></div>
+          <div class="pill pill-g">Very High</div>
+        </div>
+      </div>
+
+      <div class="sw-mini">
+        <div class="sw-card">
+          <div class="sw-label">Impact risk</div>
+          <div class="sw-row">
+            <div class="sw-num" id="n2">0</div>
+            <div class="sw-track"><div class="sw-fill" id="b2" style="background:#E24B4A;"></div></div>
+            <div class="pill pill-r">Critical</div>
+          </div>
+        </div>
+        <div class="sw-card">
+          <div class="sw-label">Dependency risk</div>
+          <div class="sw-row">
+            <div class="sw-num" id="n3">0</div>
+            <div class="sw-track"><div class="sw-fill" id="b3" style="background:#EF9F27;"></div></div>
+            <div class="pill pill-y">High</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sw-footnote">GRI 304-2 · TNFD LEAP aligned</div>
+    </div>
+  </section>
+
+  <!-- WHY IT MATTERS -->
+  <section class="sec" id="why">
+    <div class="container">
+      <div class="sec-tag">Why it matters</div>
+      <h2>Nature is a financial risk.<br>Most companies aren't measuring it.</h2>
+      <p class="sec-body">More than half of global GDP depends on functioning ecosystems — clean water, stable soil, healthy fisheries, climate regulation. When biodiversity declines, the economic systems built on top of it become fragile. This is no longer a conservation issue. It is a material business risk.</p>
+
+      <div class="stats-row">
+        <div class="stat">
+          <div class="stat-n">55%</div>
+          <div class="stat-d">of global GDP is moderately or highly dependent on nature and its services</div>
+        </div>
+        <div class="stat">
+          <div class="stat-n">&lt;25%</div>
+          <div class="stat-d">of companies at risk from biodiversity loss currently disclose anything about it</div>
+        </div>
+        <div class="stat">
+          <div class="stat-n">2030</div>
+          <div class="stat-d">deadline for 30×30 — protecting 30% of Earth's land and ocean under Kunming-Montreal targets</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RISK TYPES -->
+  <section class="sec" id="risk">
+    <div class="container">
+      <div class="sec-tag">Two types of risk</div>
+      <h2>Your company is exposed<br>in both directions.</h2>
+      <p class="sec-body">Biodiversity risk is not one-dimensional. TNFD distinguishes between what your operations do to nature, and what nature does to your operations. BioESG scores both — separately, so you can act on each.</p>
+
+      <div class="risk-grid">
+        <div class="risk-card impact">
+          <div class="rk-tag tag-red">Impact risk</div>
+          <div class="rk-title">What your operations do to nature</div>
+          <div class="rk-body">Mining, plantations, and large-scale construction in biodiverse regions directly destroy or fragment habitat. As disclosure requirements tighten under GRI 304 and TNFD, untracked impact becomes a regulatory and reputational liability.</div>
+        </div>
+        <div class="risk-card dep">
+          <div class="rk-tag tag-amber">Dependency risk</div>
+          <div class="rk-title">What nature does for your operations</div>
+          <div class="rk-body">Agriculture depends on pollinators. Fisheries depend on reef health. Manufacturers depend on clean water. If the ecosystem your operations rely on degrades, so does your supply chain — quietly, until it isn't.</div>
+        </div>
+        <div class="risk-card bio">
+          <div class="rk-tag tag-green">Biodiversity health</div>
+          <div class="rk-title">The baseline that determines both</div>
+          <div class="rk-body">A region with high species diversity is both more sensitive to disturbance and more ecologically resilient. Understanding it is the precondition for assessing either risk accurately — and for meeting location-specific GRI 304 disclosure requirements.</div>
+        </div>
+        <div class="risk-card policy">
+          <div class="rk-tag tag-blue">Regulatory trajectory</div>
+          <div class="rk-title">The policy window is narrowing</div>
+          <div class="rk-body">TNFD launched in 2023. GRI 304 was revised and expanded. The EU mandates nature reporting for 50,000 companies. Indonesia's biodiversity is globally significant — and globally watched. Voluntary disclosure is becoming mandatory faster than most expect.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INDUSTRY EXPOSURE -->
+  <section class="sec">
+    <div class="container">
+      <div class="sec-tag">Industry exposure</div>
+      <h2>Some sectors carry<br>more nature risk than others.</h2>
+      <p class="sec-body">BioESG covers 14 industry categories with calibrated impact and dependency weights. Here is how major sectors compare.</p>
+
+      <div class="table-wrap">
+        <table class="ind-table">
+          <thead>
+            <tr>
+              <th>Industry</th>
+              <th>Impact on nature</th>
+              <th>Dependency on nature</th>
+              <th>Primary risk driver</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Mining &amp; extraction</td>
+              <td><span class="risk-dot" style="background:#E24B4A;"></span>Very high</td>
+              <td><span class="risk-dot" style="background:#EF9F27;"></span>High</td>
+              <td>Habitat destruction, land use change</td>
+            </tr>
+            <tr>
+              <td>Palm oil &amp; large-scale plantations</td>
+              <td><span class="risk-dot" style="background:#E24B4A;"></span>High</td>
+              <td><span class="risk-dot" style="background:#EF9F27;"></span>High</td>
+              <td>Forest conversion, monoculture pressure</td>
+            </tr>
+            <tr>
+              <td>Industrial fisheries &amp; aquaculture</td>
+              <td><span class="risk-dot" style="background:#EF9F27;"></span>High</td>
+              <td><span class="risk-dot" style="background:#E24B4A;"></span>Very high</td>
+              <td>Reef and ocean ecosystem dependency</td>
+            </tr>
+            <tr>
+              <td>Tourism &amp; hospitality</td>
+              <td><span class="risk-dot" style="background:#639922;"></span>Medium</td>
+              <td><span class="risk-dot" style="background:#EF9F27;"></span>High</td>
+              <td>Dependent on natural assets for value</td>
+            </tr>
+            <tr>
+              <td>Technology &amp; finance</td>
+              <td><span class="risk-dot" style="background:#52B788;"></span>Low</td>
+              <td><span class="risk-dot" style="background:#52B788;"></span>Low</td>
+              <td>Indirect exposure via portfolio companies</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="sec" id="how">
+    <div class="container">
+      <div class="sec-tag">How it works</div>
+      <h2>From a province name<br>to a disclosure-ready report.</h2>
+      <p class="sec-body">No consultants required for the initial assessment. Three steps, three scores.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-n">01</div>
+          <div class="step-t">Input your operating context</div>
+          <div class="step-d">Select your province, industry category, operation size in hectares, and answer five dependency questions. Takes under three minutes.</div>
+        </div>
+        <div class="step">
+          <div class="step-n">02</div>
+          <div class="step-t">We process real ecological data</div>
+          <div class="step-d">Species occurrence records from GBIF are converted into Shannon diversity and species richness scores — standardized ecological indices used in peer-reviewed research.</div>
+        </div>
+        <div class="step">
+          <div class="step-n">03</div>
+          <div class="step-t">Receive three actionable scores</div>
+          <div class="step-d">Biodiversity health, impact risk, and dependency risk — each with GRI 304 disclosure references and TNFD exposure classification built in.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FRAMEWORKS -->
+  <section class="sec" id="frameworks">
+    <div class="container">
+      <div class="sec-tag">Frameworks</div>
+      <h2>Built on global standards.</h2>
+      <p class="sec-body">BioESG Indonesia is aligned with the frameworks that investors, regulators, and boards are asking for — translated into something you can actually use.</p>
+
+      <div class="fw-row">
+        <div class="fw-pill">GRI 304 — Biodiversity</div>
+        <div class="fw-pill">TNFD v1.0 LEAP</div>
+        <div class="fw-pill">Kunming-Montreal 30×30</div>
+        <div class="fw-pill">SDG 14 &amp; 15</div>
+        <div class="fw-pill">Shannon-Wiener Index</div>
+        <div class="fw-pill">GBIF open data</div>
+      </div>
+
+      <div class="out-grid" style="margin-top:2rem;">
+        <div class="out-card">
+          <div class="out-icon" style="background:var(--green-100);">📊</div>
+          <div class="out-t">Interactive dashboard</div>
+          <div class="out-d">Explore and compare scores across provinces, industries, and operation sizes in real time.</div>
+        </div>
+        <div class="out-card">
+          <div class="out-icon" style="background:#E6F1FB;">📄</div>
+          <div class="out-t">PDF disclosure report</div>
+          <div class="out-d">Formatted to GRI 304 structure. Print-ready for board presentations and investor submissions.</div>
+        </div>
+        <div class="out-card">
+          <div class="out-icon" style="background:#FEF3CD;">📋</div>
+          <div class="out-t">Excel data export</div>
+          <div class="out-d">Raw scores and component breakdowns for your finance or ESG team to integrate into existing workflows.</div>
+        </div>
+        <div class="out-card">
+          <div class="out-icon" style="background:var(--green-50);">🔓</div>
+          <div class="out-t">Open source &amp; extensible</div>
+          <div class="out-d">MIT licensed. Fork it, audit it, extend it. The methodology is transparent by design — because your disclosures need to be too.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-l">
+      <a href="#" class="logo" style="margin-bottom:4px;font-size:14px;">
+        <div class="logo-leaf" style="width:14px;height:14px;"></div>
+        BioESG Indonesia
+      </a>
+      <div>Open source · MIT License · Species data from GBIF</div>
+    </div>
+    <div class="footer-links">
+      <a href="https://github.com/weemoney/biodiversity-esg-indonesia" target="_blank">GitHub</a>
+      <a href="https://your-streamlit-app.streamlit.app" target="_blank">Try the tool</a>
+      <a href="https://weemoney.github.io/portfolio-website" target="_blank">Portfolio</a>
+    </div>
+  </footer>
+
+  <script>
+    function animNum(id, target) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      let start = null;
+      const step = (ts) => {
+        if (!start) start = ts;
+        const p = Math.min((ts - start) / 1400, 1);
+        const e = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(e * target);
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
+
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('b1').style.width = '87%';
+        document.getElementById('b2').style.width = '82%';
+        document.getElementById('b3').style.width = '68%';
+        animNum('n1', 87);
+        animNum('n2', 82);
+        animNum('n3', 68);
+      }, 600);
+    });
+  </script>
+
+</body>
+</html>
